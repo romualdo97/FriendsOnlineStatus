@@ -10,7 +10,6 @@
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
 
-
 void UFriendsListController::Enable()
 {
 	check(FriendsOnlineStatusWidget != nullptr);
@@ -54,5 +53,23 @@ void UFriendsListController::InitializeFriendsLists()
 		}
 	}
 
+	FriendsListData->OnFriendStatusChanged.BindDynamic(this, &UFriendsListController::HandleFriendStatusChange);
+
 	bIsInitialized = true;
+}
+
+void UFriendsListController::HandleFriendStatusChange(UPlayerInfo* ChangedPlayer)
+{
+	if (ChangedPlayer->IsConnected())
+	{
+		// If changed from offline to online...
+		FriendsOnlineStatusWidget->RemoveOfflinePlayer(ChangedPlayer);
+		FriendsOnlineStatusWidget->AddOnlinePlayer(ChangedPlayer);
+	}
+	else
+	{
+		// If changed from online to offline
+		FriendsOnlineStatusWidget->RemoveOnlinePlayer(ChangedPlayer);
+		FriendsOnlineStatusWidget->AddOfflinePlayer(ChangedPlayer);
+	}
 }

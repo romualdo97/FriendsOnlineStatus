@@ -7,10 +7,10 @@
 #include "Model/FriendsListModel.h"
 #include "FriendsListService.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnFriendStatusChanged, uint32, LocalFriendId);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnFriendStatusChanged, UPlayerInfo*, ChangedPlayer);
 
 /**
- * Holds and mutates the "friends" data while emitting data changes. 
+ * Holds and mutates the "friends" data (so it keeps sync with remote) while emitting data changes.
  */
 UCLASS()
 class FRIENDSONLINESTATUS_API UFriendsListService : public UObject
@@ -22,26 +22,36 @@ public:
 	UFriendsListService(const FObjectInitializer& ObjectInitializer);
 
 	// Start fetching data from remote
-	void StartService();
-
-	// Load initial data
-	void LoadFriend(UPlayerInfo* NewPlayer) const;
-
-	// Set the online status of specific local friend id
-	void SetOnlineStatusById(const uint32 LocalFriendId, const bool bIsOnline) const;
-	
-	// Get player info
-	UPlayerInfo* GetPlayerInfoById(const uint32 LocalFriendId) const;
+	void StartService(UWorld* InWorld);
 
 	// Array listing all the friends
 	const TArray<UPlayerInfo*>& GetFriends() const;
 
+private:
+	// Load initial data
+	void LoadMockedData() const;
+
+	// Update the connection status
+	void UpdateRandomPlayerStatus();
+
+	// Do a fake player status sync
+	UFUNCTION()
+	void DoFakeSync();
+
+public:
 	// Dynamic delegate called when the online status of a player changes
 	FOnFriendStatusChanged OnFriendStatusChanged;
 	
 private:
-
 	// The friend list
 	UPROPERTY()
 	UFriendsListModel* FriendList;
+
+	UPROPERTY()
+	UWorld* World;
+
+	UPROPERTY()
+	FTimerHandle TimerHandle; // Used to mimic user connection/disconnection
+
+	uint32 SyncCount{ 0 };
 };

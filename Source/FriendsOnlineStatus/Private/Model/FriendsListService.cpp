@@ -3,45 +3,19 @@
 
 #include "Model/FriendsListService.h"
 #include "Model/PlayerInfo.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 UFriendsListService::UFriendsListService(const FObjectInitializer& ObjectInitializer)
 {
 	FriendList = NewObject<UFriendsListModel>();
 }
 
-void UFriendsListService::StartService()
+void UFriendsListService::StartService(UWorld* InWorld)
 {
-	// TODO: Start fetching data
-}
-
-void UFriendsListService::LoadFriend(UPlayerInfo* NewPlayer) const
-{
-	// NOTE: Loading new friends may invalidate the localId of the players
-	// so this is only intended to be called when loading the friend list
-	// and should be recalled if the list gets modified
-	FriendList->AddFriend(NewPlayer);
-}
-
-void UFriendsListService::SetOnlineStatusById(const uint32 LocalFriendId, const bool bIsOnline) const
-{
-	UPlayerInfo* PlayerInfo = GetPlayerInfoById(LocalFriendId);
-	check(PlayerInfo != nullptr);
-
-	FriendList->SetOnlineStatus(PlayerInfo, bIsOnline);
-	bool Result = OnFriendStatusChanged.ExecuteIfBound(LocalFriendId);
-}
-
-UPlayerInfo* UFriendsListService::GetPlayerInfoById(const uint32 LocalFriendId) const
-{
-	if (FriendList->GetAllFriends().IsValidIndex(LocalFriendId))
-	{
-		// Returns a copy of the source data to make the model immutable
-		return FriendList->GetAllFriends()[LocalFriendId];
-	}
-
-	// You shall no pass!!
-	check(false);
-	return nullptr;
+	check(InWorld != nullptr);
+	World = InWorld;
+	LoadMockedData();
+	DoFakeSync();
 }
 
 const TArray<UPlayerInfo*>& UFriendsListService::GetFriends() const
@@ -49,4 +23,83 @@ const TArray<UPlayerInfo*>& UFriendsListService::GetFriends() const
 	return FriendList->GetAllFriends();
 }
 
+void UFriendsListService::LoadMockedData() const
+{
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Jay Roe",
+		1,
+		true
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Foo Ville",
+		2,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Pou Stomp",
+		7,
+		true
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Zizu Valdivia",
+		4,
+		true
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Luis Diaz",
+		15,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Andrea Virotelli",
+		12,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Giaccomo Stompson",
+		12,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Pluto Johnson",
+		12,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Pirotecnio Star",
+		12,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Captain RJ",
+		12,
+		false
+	));
+	FriendList->AddFriend(UPlayerInfo::CreatePlayerInfo(
+		"Commander JR",
+		12,
+		false
+	));
+}
+
+void UFriendsListService::UpdateRandomPlayerStatus()
+{
+	if (SyncCount > 0)
+	{
+		const TArray<UPlayerInfo*>& AllFriends = FriendList->GetAllFriends();
+		UPlayerInfo* Friend = AllFriends[FMath::RandRange(0, AllFriends.Num() - 1)];
+		FriendList->SetOnlineStatus(Friend, !Friend->IsConnected());
+		OnFriendStatusChanged.ExecuteIfBound(Friend);
+	}
+	++SyncCount;
+}
+
+void UFriendsListService::DoFakeSync()
+{
+	check(World != nullptr);
+
+	World->GetTimerManager().SetTimer(TimerHandle, this, &UFriendsListService::DoFakeSync, FMath::RandRange(0.5f, 5.0f), true);
+	
+	UpdateRandomPlayerStatus();
+}
 

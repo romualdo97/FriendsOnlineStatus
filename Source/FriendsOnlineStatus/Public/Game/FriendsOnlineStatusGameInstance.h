@@ -26,9 +26,6 @@ public:
 	void LoadMenu();
 
 private:
-	void LoadMockedFriendData() const;
-
-private:
 	UPROPERTY()
 	UFriendsListService* FriendListData;
 

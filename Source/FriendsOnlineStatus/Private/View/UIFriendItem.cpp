@@ -11,7 +11,6 @@ void UUIFriendItem::NativeOnListItemObjectSet(UObject* ListItemObject)
 	const UPlayerInfo* FriendInfo = Cast<UPlayerInfo>(ListItemObject);
 	check(FriendInfo != nullptr);
 
-	UE_LOG(LogTemp, Warning, TEXT("Friend %s, LocalId %i"), *FriendInfo->GetNickname(), FriendInfo->GetLevel());
 	NicknameLabel->SetText(FText::FromString(FriendInfo->GetNickname()));
 	LevelValueLabel->SetText(FText::FromString(FString::Printf(TEXT("Level: %i"), FriendInfo->GetLevel())));
 }

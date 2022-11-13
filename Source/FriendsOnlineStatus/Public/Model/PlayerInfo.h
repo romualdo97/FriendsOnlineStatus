@@ -22,13 +22,11 @@ public:
 	const FString& GetNickname() const { return Nickname; }
 	uint32 GetLevel() const { return Level; }
 	bool IsConnected() const { return bIsConnected; }
-	uint32 GetLocalPlayerId() const { return LocalPlayerId; }
 	
 private:
 	FString Nickname{ TEXT("Anonymous") };
 	uint32 Level{ 0 };
 	bool bIsConnected{ false };
-	uint32 LocalPlayerId{ 0 };
 
 	// Mark as friend so the model is responsible of updating local id
 	friend UFriendsListModel;

@@ -36,8 +36,6 @@ void UUIExpandableFriendsList::UpdateCountLabel()
 
 void UUIExpandableFriendsList::OnExpandButtonClicked()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Expand clicked"));
-
 	if (bIsExpanded)
 	{
 		// Collapse

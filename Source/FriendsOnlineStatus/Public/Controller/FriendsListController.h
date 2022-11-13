@@ -9,6 +9,7 @@
 #include "FriendsListController.generated.h"
 
 // Forward declared
+class UPlayerInfo;
 class UFriendsListService;
 class UUIFriendsList;
 
@@ -41,6 +42,9 @@ public:
 
 private:
 	void InitializeFriendsLists();
+
+	UFUNCTION()
+	void HandleFriendStatusChange(UPlayerInfo* ChangedPlayer);
 
 private:
 	bool bIsInitialized{ false };

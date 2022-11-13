@@ -7,7 +7,6 @@
 
 void UFriendsListModel::AddFriend(UPlayerInfo* FriendInfo)
 {
-	FriendInfo->LocalPlayerId = static_cast<uint32>(AllFriends.Num());
 	AllFriends.Add(FriendInfo);
 }
 
