@@ -3,42 +3,53 @@
 
 #include "Model/FriendsListService.h"
 
-UFriendsListService::UFriendsListService()
+#include "Model/PlayerInfo.h"
+
+UFriendsListService::UFriendsListService(const FObjectInitializer& ObjectInitializer)
 {
-	FriendList.Reset(new FFriendsListModel);
+	FriendList = NewObject<UFriendsListModel>();
 }
 
-void UFriendsListService::LoadFriend(FPlayerInfo* NewPlayer) const
+void UFriendsListService::LoadFriend(UPlayerInfo* NewPlayer) const
 {
-	FriendList->AllFriends.Add(TUniquePtr<FPlayerInfo>(NewPlayer));
-}
-
-uint32 UFriendsListService::GetLocalFriendIdByNickname(const FString& Nickname) const
-{
-	// TODO: Implement
-	return 1;
+	// NOTE: Loading new friends may invalidate the localId of the players
+	// so this is only intended to be called when loading the friend list
+	// and should be recalled if the list gets modified
+	FriendList->AddFriend(NewPlayer);
 }
 
 void UFriendsListService::SetOnlineStatusById(const uint32 LocalFriendId, const bool bIsOnline) const
 {
-	if (FriendList->AllFriends.IsValidIndex(LocalFriendId))
-	{
-		FriendList->AllFriends[LocalFriendId]->bIsConnected = bIsOnline;
-		bool Result = OnFriendStatusChanged.ExecuteIfBound(LocalFriendId);
-	}
+	UPlayerInfo* PlayerInfo = GetPlayerInfoById(LocalFriendId);
+	check(PlayerInfo != nullptr);
+
+	FriendList->SetOnlineStatus(PlayerInfo, bIsOnline);
+	bool Result = OnFriendStatusChanged.ExecuteIfBound(LocalFriendId);
 }
 
-FPlayerInfo UFriendsListService::GetPlayerInfoById(const uint32 LocalFriendId) const
+UPlayerInfo* UFriendsListService::GetPlayerInfoById(const uint32 LocalFriendId) const
 {
-	if (FriendList->AllFriends.IsValidIndex(LocalFriendId))
+	if (FriendList->GetAllFriends().IsValidIndex(LocalFriendId))
 	{
-		// Returns a copy of the source data so the model is immutable
-		return *FriendList->AllFriends[LocalFriendId];
+		// Returns a copy of the source data to make the model immutable
+		return FriendList->GetAllFriends()[LocalFriendId];
 	}
 
 	// You shall no pass!!
 	check(false);
-	return FPlayerInfo();
+	return nullptr;
+}
+
+UFriendsListModel::FFriendsListType::RangedForIteratorType UFriendsListService::begin()
+{
+	UFriendsListModel::FFriendsListType AllFriends = FriendList->GetAllFriends();
+	return AllFriends.begin();
+}
+
+UFriendsListModel::FFriendsListType::RangedForIteratorType UFriendsListService::end()
+{
+	UFriendsListModel::FFriendsListType AllFriends = FriendList->GetAllFriends();
+	return AllFriends.end();
 }
 
 

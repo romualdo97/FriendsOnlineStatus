@@ -7,7 +7,6 @@
 #include "Model/FriendsListModel.h"
 #include "FriendsListService.generated.h"
 
-DECLARE_DELEGATE_RetVal_OneParam(bool /*Should load more?*/, FLoaderFunctionDelegate, FPlayerInfo&/*InOut Initialize the data*/);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnFriendStatusChanged, uint32, LocalFriendId);
 
 /**
@@ -20,24 +19,29 @@ class FRIENDSONLINESTATUS_API UFriendsListService : public UObject
 
 public:
 	// Default constructor
-	UFriendsListService();
+	UFriendsListService(const FObjectInitializer& ObjectInitializer);
 
 	// Load initial data
-	void LoadFriend(FPlayerInfo* NewPlayer) const;
+	void LoadFriend(UPlayerInfo* NewPlayer) const;
 
 	// Set the online status of specific local friend id
 	void SetOnlineStatusById(const uint32 LocalFriendId, const bool bIsOnline) const;
-
-	// Given a nickname returns the local friend id
-	uint32 GetLocalFriendIdByNickname(const FString& Nickname) const;
-
-	// Get a player info copy
-	FPlayerInfo GetPlayerInfoById(const uint32 LocalFriendId) const;
+	
+	// Get player info
+	UPlayerInfo* GetPlayerInfoById(const uint32 LocalFriendId) const;
 
 	// Dynamic delegate called when the online status of a player changes
 	FOnFriendStatusChanged OnFriendStatusChanged;
 
+	// Constant begin iterator
+	UFriendsListModel::FFriendsListType::RangedForIteratorType begin();
+
+	// Constant end iterator
+	UFriendsListModel::FFriendsListType::RangedForIteratorType end();
+
 private:
+
 	// The friend list
-	TUniquePtr<FFriendsListModel> FriendList;
+	UPROPERTY()
+	UFriendsListModel* FriendList;
 };
