@@ -7,17 +7,31 @@
 #include "Animation/WidgetAnimation.h"
 #include "Components/Button.h"
 #include "Components/ListView.h"
+#include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 void UUIExpandableFriendsList::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	/*for (uint32 i = 0; i < 32; ++i)
-	{
-		ListView->AddItem(NewObject<UObject>());
-	}*/
-	
 	ExpandButton->OnClicked.AddDynamic(this, &UUIExpandableFriendsList::OnExpandButtonClicked);
+}
+
+void UUIExpandableFriendsList::AddItem(UObject* Item)
+{
+	ListView->AddItem(Item);
+	UpdateCountLabel();
+}
+
+void UUIExpandableFriendsList::RemoveItem(UObject* Item)
+{
+	ListView->RemoveItem(Item);
+	UpdateCountLabel();
+}
+
+void UUIExpandableFriendsList::UpdateCountLabel()
+{
+	CountLabel->SetText(FText::FromString(FString::Printf(TEXT("%i"), ListView->GetNumItems())));
 }
 
 void UUIExpandableFriendsList::OnExpandButtonClicked()

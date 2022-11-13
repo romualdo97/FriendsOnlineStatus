@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "View/UIFriendsOnlineStatus.h"
 #include "Blueprint/UserWidget.h"
 #include "UObject/NoExportTypes.h"
 #include "FriendsListController.generated.h"
 
 // Forward declared
 class UFriendsListService;
-class UFriendsListWidget;
+class UUIFriendsList;
 
 /**
  * Bounds the FriendListWidget with the FriendListModel, i.e. Widget <-> Controller <- Model
@@ -27,20 +28,26 @@ public:
 		check(InWidgetOwner != nullptr);
 		check(InFriendListWidgetClass != nullptr);
 		check(InFriendsListData != nullptr);
-		FriendListWidget = CreateWidget(InWidgetOwner, InFriendListWidgetClass);
+		UUserWidget* Widget = CreateWidget<UUserWidget>(InWidgetOwner, InFriendListWidgetClass);
+		FriendsOnlineStatusWidget = Cast<UUIFriendsOnlineStatus>(Widget);
 		FriendsListData = InFriendsListData;
 	}
 
 	// Enable view
-	void Enable() const;
+	void Enable();
 
 	// Disable view
-	void Disable() const;
+	void Disable();
 
 private:
+	void InitializeFriendsLists();
+
+private:
+	bool bIsInitialized{ false };
+
 	UPROPERTY()
 	UFriendsListService* FriendsListData;
 	
 	UPROPERTY()
-	UUserWidget* FriendListWidget;
+	UUIFriendsOnlineStatus* FriendsOnlineStatusWidget;
 };

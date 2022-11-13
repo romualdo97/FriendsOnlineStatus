@@ -33,15 +33,12 @@ public:
 	// Get player info
 	UPlayerInfo* GetPlayerInfoById(const uint32 LocalFriendId) const;
 
+	// Array listing all the friends
+	const TArray<UPlayerInfo*>& GetFriends() const;
+
 	// Dynamic delegate called when the online status of a player changes
 	FOnFriendStatusChanged OnFriendStatusChanged;
-
-	// Constant begin iterator
-	TArray<UPlayerInfo*>::RangedForIteratorType begin();
-
-	// Constant end iterator
-	TArray<UPlayerInfo*>::RangedForIteratorType end();
-
+	
 private:
 
 	// The friend list

@@ -4,40 +4,55 @@
 #include "Controller/FriendsListController.h"
 #include "Model/FriendsListService.h"
 #include "Model/PlayerInfo.h"
+#include "View/UIFriendsOnlineStatus.h"
 #include "View/UIExpandableFriendsList.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
 
 
-void UFriendsListController::Enable() const
+void UFriendsListController::Enable()
 {
-	check(FriendListWidget != nullptr);
-	FriendListWidget->AddToViewport(0);
+	check(FriendsOnlineStatusWidget != nullptr);
+	FriendsOnlineStatusWidget->AddToViewport(0);
 
-	const UWorld* World = FriendListWidget->GetWorld();
+	const UWorld* World = FriendsOnlineStatusWidget->GetWorld();
 	check(World != nullptr);
 	
 	APlayerController* PlayerController = World->GetFirstPlayerController();
 	check(PlayerController != nullptr);
 
 	FInputModeUIOnly InputMode;
-	InputMode.SetWidgetToFocus(FriendListWidget->TakeWidget());
+	InputMode.SetWidgetToFocus(FriendsOnlineStatusWidget->TakeWidget());
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->bShowMouseCursor = true;
 
-	const UUIExpandableFriendsList* Expandable = Cast<UUIExpandableFriendsList>(FriendListWidget);
-	check(Expandable != nullptr);
-
-	UFriendsListService& FriendsData = *FriendsListData;
-	for (UPlayerInfo* Friend : FriendsData)
-	{
-		//Expandable->GetListView()->AddItem(Friend);
-	}
+	InitializeFriendsLists();
 }
 
-void UFriendsListController::Disable() const
+void UFriendsListController::Disable()
 {
-	FriendListWidget->RemoveFromViewport();
+	FriendsOnlineStatusWidget->RemoveFromViewport();
+}
+
+void UFriendsListController::InitializeFriendsLists()
+{
+	if (bIsInitialized) return;
+	check(FriendsListData != nullptr);
+	check(FriendsOnlineStatusWidget != nullptr);
+
+	for (UPlayerInfo* Friend : FriendsListData->GetFriends())
+	{
+		if (Friend->IsConnected())
+		{
+			FriendsOnlineStatusWidget->AddOnlinePlayer(Friend);
+		}
+		else
+		{
+			FriendsOnlineStatusWidget->AddOfflinePlayer(Friend);
+		}
+	}
+
+	bIsInitialized = true;
 }

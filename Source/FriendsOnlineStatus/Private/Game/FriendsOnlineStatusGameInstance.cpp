@@ -21,6 +21,7 @@ void UFriendsOnlineStatusGameInstance::Init()
 
 	// Create the data object
 	FriendListData = NewObject<UFriendsListService>();
+	FriendListData->StartService();
 	LoadMockedFriendData();
 	
 	// Inject data and view object into the controller
@@ -69,6 +70,11 @@ void UFriendsOnlineStatusGameInstance::LoadMockedFriendData() const
 	));
 	FriendListData->LoadFriend(UPlayerInfo::CreatePlayerInfo(
 		"Andrea Virotelli",
+		12,
+		false
+	));
+	FriendListData->LoadFriend(UPlayerInfo::CreatePlayerInfo(
+		"Giaccomo Stompson",
 		12,
 		false
 	));

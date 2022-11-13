@@ -2,7 +2,6 @@
 
 
 #include "Model/FriendsListService.h"
-
 #include "Model/PlayerInfo.h"
 
 UFriendsListService::UFriendsListService(const FObjectInitializer& ObjectInitializer)
@@ -12,6 +11,7 @@ UFriendsListService::UFriendsListService(const FObjectInitializer& ObjectInitial
 
 void UFriendsListService::StartService()
 {
+	// TODO: Start fetching data
 }
 
 void UFriendsListService::LoadFriend(UPlayerInfo* NewPlayer) const
@@ -44,16 +44,9 @@ UPlayerInfo* UFriendsListService::GetPlayerInfoById(const uint32 LocalFriendId) 
 	return nullptr;
 }
 
-TArray<UPlayerInfo*>::RangedForIteratorType UFriendsListService::begin()
+const TArray<UPlayerInfo*>& UFriendsListService::GetFriends() const
 {
-	TArray<UPlayerInfo*> AllFriends = FriendList->GetAllFriends();
-	return AllFriends.begin();
-}
-
-TArray<UPlayerInfo*>::RangedForIteratorType UFriendsListService::end()
-{
-	TArray<UPlayerInfo*> AllFriends = FriendList->GetAllFriends();
-	return AllFriends.end();
+	return FriendList->GetAllFriends();
 }
 
 
