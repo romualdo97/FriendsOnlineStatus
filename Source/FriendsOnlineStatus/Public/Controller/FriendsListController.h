@@ -29,11 +29,6 @@ public:
 		check(InFriendsListData != nullptr);
 		FriendListWidget = CreateWidget(InWidgetOwner, InFriendListWidgetClass);
 		FriendsListData = InFriendsListData;
-
-		for (const auto& Friend : *FriendsListData)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Friend %s, LocalId %i"), *(*Friend).GetNickname(), (*Friend).GetLocalPlayerId());
-		}
 	}
 
 	// Enable view

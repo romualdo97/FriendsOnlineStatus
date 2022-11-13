@@ -21,6 +21,9 @@ class FRIENDSONLINESTATUS_API UUIExpandableFriendsList : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UListView* GetListView() const { return ListView; }
+
 protected:
 	virtual void NativeConstruct() override;
 

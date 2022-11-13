@@ -10,6 +10,10 @@ UFriendsListService::UFriendsListService(const FObjectInitializer& ObjectInitial
 	FriendList = NewObject<UFriendsListModel>();
 }
 
+void UFriendsListService::StartService()
+{
+}
+
 void UFriendsListService::LoadFriend(UPlayerInfo* NewPlayer) const
 {
 	// NOTE: Loading new friends may invalidate the localId of the players
@@ -40,15 +44,15 @@ UPlayerInfo* UFriendsListService::GetPlayerInfoById(const uint32 LocalFriendId) 
 	return nullptr;
 }
 
-UFriendsListModel::FFriendsListType::RangedForIteratorType UFriendsListService::begin()
+TArray<UPlayerInfo*>::RangedForIteratorType UFriendsListService::begin()
 {
-	UFriendsListModel::FFriendsListType AllFriends = FriendList->GetAllFriends();
+	TArray<UPlayerInfo*> AllFriends = FriendList->GetAllFriends();
 	return AllFriends.begin();
 }
 
-UFriendsListModel::FFriendsListType::RangedForIteratorType UFriendsListService::end()
+TArray<UPlayerInfo*>::RangedForIteratorType UFriendsListService::end()
 {
-	UFriendsListModel::FFriendsListType AllFriends = FriendList->GetAllFriends();
+	TArray<UPlayerInfo*> AllFriends = FriendList->GetAllFriends();
 	return AllFriends.end();
 }
 

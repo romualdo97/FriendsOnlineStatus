@@ -3,8 +3,12 @@
 
 #include "Controller/FriendsListController.h"
 #include "Model/FriendsListService.h"
+#include "Model/PlayerInfo.h"
+#include "View/UIExpandableFriendsList.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
+
 
 void UFriendsListController::Enable() const
 {
@@ -22,6 +26,15 @@ void UFriendsListController::Enable() const
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->bShowMouseCursor = true;
+
+	const UUIExpandableFriendsList* Expandable = Cast<UUIExpandableFriendsList>(FriendListWidget);
+	check(Expandable != nullptr);
+
+	UFriendsListService& FriendsData = *FriendsListData;
+	for (UPlayerInfo* Friend : FriendsData)
+	{
+		//Expandable->GetListView()->AddItem(Friend);
+	}
 }
 
 void UFriendsListController::Disable() const

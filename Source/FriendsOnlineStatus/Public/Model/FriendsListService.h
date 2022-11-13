@@ -21,6 +21,9 @@ public:
 	// Default constructor
 	UFriendsListService(const FObjectInitializer& ObjectInitializer);
 
+	// Start fetching data from remote
+	void StartService();
+
 	// Load initial data
 	void LoadFriend(UPlayerInfo* NewPlayer) const;
 
@@ -34,10 +37,10 @@ public:
 	FOnFriendStatusChanged OnFriendStatusChanged;
 
 	// Constant begin iterator
-	UFriendsListModel::FFriendsListType::RangedForIteratorType begin();
+	TArray<UPlayerInfo*>::RangedForIteratorType begin();
 
 	// Constant end iterator
-	UFriendsListModel::FFriendsListType::RangedForIteratorType end();
+	TArray<UPlayerInfo*>::RangedForIteratorType end();
 
 private:
 

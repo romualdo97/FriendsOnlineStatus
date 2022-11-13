@@ -18,10 +18,8 @@ class FRIENDSONLINESTATUS_API UFriendsListModel : public UObject
 	GENERATED_BODY()
 		
 public:
-	using FFriendsListType = TArray<UPlayerInfo*>;
-
 	// Get all friends
-	const FFriendsListType& GetAllFriends() const { return AllFriends; }
+	const TArray<UPlayerInfo*>& GetAllFriends() const { return AllFriends; }
 
 	// These methods can modify the model
 	static void SetOnlineStatus(UPlayerInfo* PlayerInfo, bool IsConnected);
@@ -29,5 +27,6 @@ public:
 	void ClearFriends();
 
 private:
-	FFriendsListType AllFriends;
+	UPROPERTY()
+	TArray<UPlayerInfo*> AllFriends;
 };

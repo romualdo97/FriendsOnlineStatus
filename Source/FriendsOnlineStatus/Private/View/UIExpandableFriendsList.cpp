@@ -12,10 +12,10 @@ void UUIExpandableFriendsList::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	for (uint32 i = 0; i < 32; ++i)
+	/*for (uint32 i = 0; i < 32; ++i)
 	{
 		ListView->AddItem(NewObject<UObject>());
-	}
+	}*/
 	
 	ExpandButton->OnClicked.AddDynamic(this, &UUIExpandableFriendsList::OnExpandButtonClicked);
 }
