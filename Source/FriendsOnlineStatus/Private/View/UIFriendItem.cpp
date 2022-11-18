@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Model/PlayerInfo.h"
 #include "View/UIFriendItem.h"
+#include "Model/PlayerInfo.h"
 #include "Components/TextBlock.h"
 
 void UUIFriendItem::NativeOnListItemObjectSet(UObject* ListItemObject)
