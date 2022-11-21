@@ -13,8 +13,7 @@
 void UUIExpandableFriendsList::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	ExpandButton->OnClicked.AddDynamic(this, &UUIExpandableFriendsList::OnExpandButtonClicked);
+	ExpandButton->OnClicked.AddDynamic(this, &UUIExpandableFriendsList::HandleExpandButtonClicked);
 }
 
 void UUIExpandableFriendsList::AddItem(UObject* Item)
@@ -34,7 +33,7 @@ void UUIExpandableFriendsList::UpdateCountLabel()
 	CountLabel->SetText(FText::FromString(FString::Printf(TEXT("%i"), ListView->GetNumItems())));
 }
 
-void UUIExpandableFriendsList::OnExpandButtonClicked()
+void UUIExpandableFriendsList::HandleExpandButtonClicked()
 {
 	if (bIsExpanded)
 	{

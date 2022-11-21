@@ -2,13 +2,28 @@
 
 
 #include "Controller/FriendsListController.h"
+#include "Controller/Interfaces/FriendWidgetsProvider.h"
 #include "Model/FriendsListService.h"
 #include "Model/PlayerInfo.h"
 #include "View/UIFriendsOnlineStatus.h"
-#include "View/UIExpandableFriendsList.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ListView.h"
 #include "Kismet/GameplayStatics.h"
+
+void UFriendsListController::SetupController(const IFriendWidgetsProvider* WidgetsProvider, UFriendsListService* InFriendsListData)
+{
+	check(WidgetsProvider->GetWidgetOwner() != nullptr);
+	check(WidgetsProvider->GetFriendsOnlineStatusWidgetClass() != nullptr);
+	check(WidgetsProvider->GetFriendItemTooltip() != nullptr);
+	check(InFriendsListData != nullptr);
+	
+	FriendsOnlineStatusWidget = CreateWidget<UUIFriendsOnlineStatus>(
+		WidgetsProvider->GetWidgetOwner(),
+		WidgetsProvider->GetFriendsOnlineStatusWidgetClass());
+	FriendsOnlineStatusWidget->SetFriendItemTooltip(WidgetsProvider->GetFriendItemTooltip());
+	
+	FriendsListData = InFriendsListData;
+}
 
 void UFriendsListController::Enable()
 {
@@ -32,7 +47,7 @@ void UFriendsListController::Enable()
 
 void UFriendsListController::Disable()
 {
-	FriendsOnlineStatusWidget->RemoveFromViewport();
+	FriendsOnlineStatusWidget->RemoveFromParent();
 }
 
 void UFriendsListController::InitializeFriendsLists()
@@ -54,7 +69,7 @@ void UFriendsListController::InitializeFriendsLists()
 	}
 
 	FriendsListData->OnFriendStatusChanged.BindDynamic(this, &UFriendsListController::HandleFriendStatusChange);
-
+	
 	bIsInitialized = true;
 }
 

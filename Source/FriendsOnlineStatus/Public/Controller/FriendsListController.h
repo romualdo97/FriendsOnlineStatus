@@ -12,6 +12,7 @@
 class UPlayerInfo;
 class UFriendsListService;
 class UUIFriendsList;
+class IFriendWidgetsProvider;
 
 /**
  * Bounds the FriendListWidget with the FriendListModel, i.e. Widget <-> Controller <- Model
@@ -23,16 +24,7 @@ class FRIENDSONLINESTATUS_API UFriendsListController : public UObject
 
 public:
 	// Binds the controller to a widget and its data source
-	template<class WidgetOwnerT>
-	void SetupController(WidgetOwnerT* InWidgetOwner, const TSubclassOf<UUserWidget>& InFriendListWidgetClass, UFriendsListService* InFriendsListData)
-	{
-		check(InWidgetOwner != nullptr);
-		check(InFriendListWidgetClass != nullptr);
-		check(InFriendsListData != nullptr);
-		UUserWidget* Widget = CreateWidget<UUserWidget>(InWidgetOwner, InFriendListWidgetClass);
-		FriendsOnlineStatusWidget = Cast<UUIFriendsOnlineStatus>(Widget);
-		FriendsListData = InFriendsListData;
-	}
+	void SetupController(const IFriendWidgetsProvider* WidgetsProvider, UFriendsListService* InFriendsListData);
 
 	// Enable view
 	void Enable();

@@ -8,6 +8,7 @@
 
 // Forward declared
 class UUIExpandableFriendsList;
+class UUIFriendItemTooltip;
 class UVerticalBox;
 
 /**
@@ -18,14 +19,19 @@ class FRIENDSONLINESTATUS_API UUIFriendsOnlineStatus : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	void AddOnlinePlayer(UObject* PlayerInfo);
-	void AddOfflinePlayer(UObject* PlayerInfo);
-	void RemoveOnlinePlayer(UObject* PlayerInfo);
-	void RemoveOfflinePlayer(UObject* PlayerInfo);
+	void AddOnlinePlayer(UObject* InPlayerInfo);
+	void AddOfflinePlayer(UObject* InPlayerInfo);
+	void RemoveOnlinePlayer(UObject* InPlayerInfo);
+	void RemoveOfflinePlayer(UObject* InPlayerInfo);
+	void SetFriendItemTooltip(UUIFriendItemTooltip* InUserWidget);
 
 protected:
 	virtual void NativeConstruct() override;
 
+private:
+	UFUNCTION()
+	void HandleFriendItemIsHoveredChanged(UObject* ItemObject, bool bIsHovered, UUIExpandableFriendsList* ExpandableFriendsList);
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = FriendsOnlineStatusSettings)
 	TSubclassOf<UUIExpandableFriendsList> OnlineFriendsListClass;
@@ -41,4 +47,7 @@ private:
 
 	UPROPERTY()
 	UUIExpandableFriendsList* OfflineFriendsList;
+
+	UPROPERTY()
+	UUIFriendItemTooltip* FriendItemTooltip;
 };

@@ -20,6 +20,7 @@ class FRIENDSONLINESTATUS_API UPlayerInfo : public UObject
 public:
 	static UPlayerInfo* CreatePlayerInfo(const FString& InNickname, uint32 InLevel, bool InIsConnected);
 	const FString& GetNickname() const { return Nickname; }
+	FString GetLevelAsNiceString() const { return FString::Printf(TEXT("Level: %i"), GetLevel()); }
 	uint32 GetLevel() const { return Level; }
 	bool IsConnected() const { return bIsConnected; }
 	

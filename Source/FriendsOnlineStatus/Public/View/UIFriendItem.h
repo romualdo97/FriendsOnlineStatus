@@ -9,6 +9,11 @@
 
 // Forward declared
 class UTextBlock;
+class UButton;
+class UPlayerInfo;
+
+// Use a single cast delegate just for simplicity
+DECLARE_DELEGATE_OneParam(FOnFriendHovered, UObject* /*ItemData*/);
 
 /**
  * An item for the UListView
@@ -17,12 +22,12 @@ UCLASS()
 class FRIENDSONLINESTATUS_API UUIFriendItem : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
-
+	
 protected:
 	// Implements IUserObjectListEntry
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	// End implements IUserObjectListEntry
-
+	
 private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* NicknameLabel;

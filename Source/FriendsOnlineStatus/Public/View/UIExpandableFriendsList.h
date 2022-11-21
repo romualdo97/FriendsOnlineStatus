@@ -26,7 +26,6 @@ public:
 	UListView* GetListView() const { return ListView; }
 	void AddItem(UObject* Item);
 	void RemoveItem(UObject* Item);
-	FString Name;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -35,7 +34,7 @@ private:
 	void UpdateCountLabel();
 
 	UFUNCTION()
-	void OnExpandButtonClicked();
+	void HandleExpandButtonClicked();
 
 private:
 	bool bIsExpanded { false };
