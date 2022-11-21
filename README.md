@@ -1,5 +1,5 @@
 # FriendsOnlineStatus
-UMG exercise to show the online status of a player friend list.
+UMG exercise to show the online status of a player friends list.
 
 ![showcase image](https://github.com/romualdo97/FriendsOnlineStatus/blob/master/Misc/showcase.png?raw=true)
 
