@@ -24,7 +24,7 @@ class FRIENDSONLINESTATUS_API UFriendsListController : public UObject
 
 public:
 	// Binds the controller to a widget and its data source
-	void SetupController(const IFriendWidgetsProvider* WidgetsProvider, UFriendsListService* InFriendsListData);
+	void SetupController(IFriendWidgetsProvider* InWidgetsProvider, UFriendsListService* InFriendsListData);
 
 	// Enable view
 	void Enable();
@@ -34,13 +34,14 @@ public:
 
 private:
 	void InitializeFriendsLists();
-
+	
 	UFUNCTION()
 	void HandleFriendStatusChange(UPlayerInfo* ChangedPlayer);
 
 private:
 	bool bIsInitialized{ false };
-
+	IFriendWidgetsProvider* WidgetsProvider;
+	
 	UPROPERTY()
 	UFriendsListService* FriendsListData;
 	

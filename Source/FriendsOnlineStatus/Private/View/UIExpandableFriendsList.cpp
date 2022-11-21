@@ -8,7 +8,6 @@
 #include "Components/Button.h"
 #include "Components/ListView.h"
 #include "Components/TextBlock.h"
-#include "Components/Image.h"
 
 void UUIExpandableFriendsList::NativeConstruct()
 {

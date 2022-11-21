@@ -9,6 +9,7 @@
 // Forward declared
 class UUIFriendItemTooltip;
 class UUIFriendsOnlineStatus;
+class UUIToast;
 
 // This class does not need to be modified.
 UINTERFACE()
@@ -18,7 +19,7 @@ class UFriendWidgetsProvider : public UInterface
 };
 
 /**
- * Interface to expose widgets related to friends online status from a central place,
+ * Interface to provide widgets related to friends online status from a central place,
  * e.g. friend item tooltip, toast
  */
 class FRIENDSONLINESTATUS_API IFriendWidgetsProvider
@@ -35,4 +36,7 @@ public:
 
 	// Get the friend item tooltip widget
 	virtual UUIFriendItemTooltip* GetFriendItemTooltip() const = 0;
+	
+	// Get the friend item toast widget
+	virtual UUIToast* GetToast() const = 0;
 };

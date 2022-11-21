@@ -6,6 +6,7 @@
 #include "Controller/FriendsListController.h"
 #include "Model/FriendsListService.h"
 #include "View/UIFriendItemTooltip.h"
+#include "View/UIToast.h"
 
 UFriendsOnlineStatusGameInstance::UFriendsOnlineStatusGameInstance()
 {
@@ -20,6 +21,11 @@ void UFriendsOnlineStatusGameInstance::Init()
 	check(FriendItemTooltipWidgetClass != nullptr);
 	FriendItemTooltipWidget = CreateWidget<UUIFriendItemTooltip>(this, FriendItemTooltipWidgetClass);
 	check(FriendItemTooltipWidget != nullptr);
+
+	// Create the toast widget (will be shared)
+	check(ToastWidgetClass != nullptr);
+	ToastWidget = CreateWidget<UUIToast>(this, ToastWidgetClass);
+	check(ToastWidget != nullptr);
 	
 	// Create the data object
 	FriendListData = NewObject<UFriendsListService>();
@@ -43,10 +49,15 @@ UGameInstance* UFriendsOnlineStatusGameInstance::GetWidgetOwner() const
 
 TSubclassOf<UUIFriendsOnlineStatus> UFriendsOnlineStatusGameInstance::GetFriendsOnlineStatusWidgetClass() const
 {
-	return FriendListWidgetClass;
+	return FriendsOnlineStatusWidgetClass;
 }
 
 UUIFriendItemTooltip* UFriendsOnlineStatusGameInstance::GetFriendItemTooltip() const
 {
 	return FriendItemTooltipWidget;
+}
+
+UUIToast* UFriendsOnlineStatusGameInstance::GetToast() const
+{
+	return ToastWidget;
 }
