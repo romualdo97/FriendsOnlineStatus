@@ -6,7 +6,7 @@ UMG exercise to show the online status of a player friend list.
 Check showcase [video here](https://www.youtube.com/watch?v=dlhWOrYhwLg)
 
 # Brief code description
-- [Model](https://github.com/romualdo97/FriendsOnlineStatus/tree/master/Source/FriendsOnlineStatus/Public/Model): classes to represent player data.
+- [Model](https://github.com/romualdo97/FriendsOnlineStatus/tree/master/Source/FriendsOnlineStatus/Public/Model): Classes to represent player data.
 - [View](https://github.com/romualdo97/FriendsOnlineStatus/tree/master/Source/FriendsOnlineStatus/Public/View): Unreal Widget classes representing distinct UI components.
 - [Controller](https://github.com/romualdo97/FriendsOnlineStatus/tree/master/Source/FriendsOnlineStatus/Public/Controller): Classes to orchestrate the interaction between View and Model.
     - [Model Service](https://github.com/romualdo97/FriendsOnlineStatus/blob/master/Source/FriendsOnlineStatus/Public/Model/FriendsListService.h): Model gets wrapped in a service object that is passed to the controller, the single responsibility of the service object is to keep model data in-sync while providing an immutable interface to the underlying data and notifyies state changes.
